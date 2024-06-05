@@ -48,7 +48,7 @@ public static class Tameable_IsHungry_Patch
         if (!__result) // If not hungry, return early
             return;
 
-        if (__instance.m_monsterAI == null) return;
+        if (__instance.m_monsterAI == null || __instance.m_character == null) return;
         float currentTime = Time.time;
         if (UtilityMethods.LastFeedCheckTimes.TryGetValue(__instance.m_character, out float lastCheckTime))
         {

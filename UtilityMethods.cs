@@ -13,7 +13,7 @@ public class UtilityMethods
 
     internal static void RegisterContainer(Container container)
     {
-        if (!RegisteredContainers.Contains(container))
+        if (container != null && !RegisteredContainers.Contains(container))
         {
             RegisteredContainers.Add(container);
         }
@@ -21,7 +21,7 @@ public class UtilityMethods
 
     internal static void DeRegisterContainer(Container container)
     {
-        if (RegisteredContainers.Contains(container))
+        if (container != null && RegisteredContainers.Contains(container))
         {
             RegisteredContainers.Remove(container);
         }
@@ -33,10 +33,12 @@ public class UtilityMethods
 
         foreach (Container container in nearbyContainers)
         {
+            if (container.GetInventory() == null)
+                continue;
             if (PetPantryPlugin.RequireOnlyFood.Value == PetPantryPlugin.Toggle.On && container.GetInventory().GetAllItems().Any(item => !animalAI.m_consumeItems.Exists(ci => ci.m_itemData.m_shared.m_name == item.m_shared.m_name)))
                 continue;
 
-            foreach (ItemDrop.ItemData item in container.GetInventory().GetAllItems().Where(item => IsFoodForAnimal(item, animalAI)))
+            foreach (ItemDrop.ItemData? item in container.GetInventory().GetAllItems().Where(item => IsFoodForAnimal(item, animalAI)))
             {
                 FeedAnimal(animalAI, tamable, character, container, item);
                 return;
@@ -46,18 +48,20 @@ public class UtilityMethods
 
     private static List<Container> GetNearbyContainers(Vector3 position, float range)
     {
-        return RegisteredContainers.Where(c => Vector3.Distance(c.transform.position, position) <= range).ToList();
+        return RegisteredContainers.Where(c => c != null && Vector3.Distance(c.transform.position, position) <= range).ToList();
     }
 
-    private static bool IsFoodForAnimal(ItemDrop.ItemData item, MonsterAI animalAI)
+    private static bool IsFoodForAnimal(ItemDrop.ItemData? item, MonsterAI animalAI)
     {
-        return animalAI.m_consumeItems.Exists(ci => ci.m_itemData.m_shared.m_name == item.m_shared.m_name);
+        return animalAI != null && item != null && animalAI.m_consumeItems.Exists(ci => ci.m_itemData.m_shared.m_name == item.m_shared.m_name);
     }
 
-    private static void FeedAnimal(MonsterAI animalAI, Tameable tamable, Character character, Container container, ItemDrop.ItemData item)
+    private static void FeedAnimal(MonsterAI animalAI, Tameable tamable, Character character, Container container, ItemDrop.ItemData? item)
     {
+        if (animalAI == null || tamable == null || character == null || container == null || item == null) return;
         animalAI.m_onConsumedItem?.Invoke(null);
-        (character as Humanoid).m_consumeItemEffects.Create(character.transform.position, Quaternion.identity);
+        Humanoid? humanoid = character as Humanoid;
+        humanoid?.m_consumeItemEffects.Create(character.transform.position, Quaternion.identity);
         animalAI.m_animator.SetTrigger("consume");
         container.GetInventory().RemoveItem(item.m_shared.m_name, 1);
         tamable.ResetFeedingTimer();

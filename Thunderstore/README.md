@@ -1,6 +1,6 @@
-# Description
+# PetPantry
 
-# PetPantry Mod
+![](https://github.com/AzumattDev/PetPantry/blob/master/Thunderstore/icon.png?raw=true)
 
 ## The **PetPantry** mod for Valheim automatically feeds tamed animals from nearby containers, ensuring your pets stay happy and healthy without manual intervention. This mod is optimized for performance, reducing the overhead typically associated with continuous checks for nearby containers and food items.
 
@@ -48,7 +48,9 @@
 ## Configuration
 
 ContainerRange: Defines the range in meters within which containers are checked for food items.
+
 RequireOnlyFood: Ensures only containers with acceptable food items are considered for feeding.
+
 FeedCheckCooldown: Cooldown in seconds between feed checks. Checks only occur when the pet is hungry.
 
 <details>
