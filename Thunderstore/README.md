@@ -13,6 +13,8 @@
 
 ---
 
+Made this quickly since people asked for it and most of the other alternatives are either broken or have issues.
+
 # PetPantry Mod
 
 ## Benefits
@@ -52,6 +54,8 @@ ContainerRange: Defines the range in meters within which containers are checked 
 RequireOnlyFood: Ensures only containers with acceptable food items are considered for feeding.
 
 FeedCheckCooldown: Cooldown in seconds between feed checks. Checks only occur when the pet is hungry.
+
+Objectively shite code here: [PetPantry on GitHub](https://github.com/AzumattDev/PetPantry)
 
 <details>
 <summary><b>Installation Instructions</b></summary>
