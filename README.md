@@ -17,7 +17,7 @@
 
 ## Benefits
 
-### Compared to Counterparts:
+### Compared to Counterparts that are usually a named variation of "AutoFeed" or reuploads of Aedenthorn's AutoFeed mod, PetPantry offers the following advantages:
 
 - **Event-Driven Feeding**: Unlike other mods that constantly check for food, PetPantry only checks when an animal
   becomes hungry.

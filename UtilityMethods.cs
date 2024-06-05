@@ -53,6 +53,11 @@ public class UtilityMethods
 
     private static bool IsFoodForAnimal(ItemDrop.ItemData? item, MonsterAI animalAI)
     {
+        if (animalAI.m_consumeItems == null || animalAI.m_consumeItems.Count == 0)
+        {
+            return false;
+        }
+
         return animalAI != null && item != null && animalAI.m_consumeItems.Exists(ci => ci.m_itemData.m_shared.m_name == item.m_shared.m_name);
     }
 
