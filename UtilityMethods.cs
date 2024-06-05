@@ -64,6 +64,7 @@ public class UtilityMethods
         humanoid?.m_consumeItemEffects.Create(character.transform.position, Quaternion.identity);
         animalAI.m_animator.SetTrigger("consume");
         container.GetInventory().RemoveItem(item.m_shared.m_name, 1);
+        container.Save();
         tamable.ResetFeedingTimer();
     }
 }

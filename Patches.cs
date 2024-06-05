@@ -45,7 +45,7 @@ public static class Tameable_IsHungry_Patch
 {
     public static void Postfix(Tameable __instance, ref bool __result)
     {
-        if (!__result) // If not hungry, return early
+        if (!__result || !__instance.m_nview.IsOwner()) // If not hungry, return early
             return;
 
         if (__instance.m_monsterAI == null || __instance.m_character == null) return;
