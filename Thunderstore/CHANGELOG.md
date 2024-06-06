@@ -1,3 +1,4 @@
-| `Version` | `Update Notes`    |
-|-----------|-------------------|
-| 1.0.0     | - Initial Release |
+| `Version` | `Update Notes`                                                                                                                                                                                                                                   |
+|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1.0.1     | - Fix potential memory leak by not cleaning up tames in the tracked lists.<br/> - Possible NRE could be thrown if you leave the area of a chest without teleporting away and it just de-renders. Remove from the tracked containers effectively. |
+| 1.0.0     | - Initial Release                                                                                                                                                                                                                                |

@@ -10,6 +10,8 @@ public class UtilityMethods
 {
     internal static readonly List<Container> RegisteredContainers = [];
     internal static readonly Dictionary<Character, float> LastFeedCheckTimes = new();
+    private const string NameFilter = "Treasure";
+    private const string ConsumeTrigger = "consume";
 
     internal static void RegisterContainer(Container container)
     {
@@ -25,6 +27,11 @@ public class UtilityMethods
         {
             RegisteredContainers.Remove(container);
         }
+    }
+
+    internal static bool VerifyContainer(Container container)
+    {
+        return container != null && !container.name.StartsWith(NameFilter) && container.GetInventory() != null && container.m_nview.IsValid() && container.m_nview.GetZDO().GetLong(ZDOVars.s_creator) != 0L;
     }
 
     internal static void TryFeedAnimal(MonsterAI animalAI, Tameable tamable, Character character)
@@ -67,9 +74,17 @@ public class UtilityMethods
         animalAI.m_onConsumedItem?.Invoke(null);
         Humanoid? humanoid = character as Humanoid;
         humanoid?.m_consumeItemEffects.Create(character.transform.position, Quaternion.identity);
-        animalAI.m_animator.SetTrigger("consume");
+        animalAI.m_animator.SetTrigger(ConsumeTrigger);
         container.GetInventory().RemoveItem(item.m_shared.m_name, 1);
         container.Save();
         tamable.ResetFeedingTimer();
+    }
+
+    internal static void SafeRemoveFeedCheckTime(Character character)
+    {
+        if (character == null)
+            return;
+        if (LastFeedCheckTimes.ContainsKey(character))
+            LastFeedCheckTimes.Remove(character);
     }
 }
