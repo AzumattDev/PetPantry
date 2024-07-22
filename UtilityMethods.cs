@@ -15,8 +15,9 @@ public class UtilityMethods
 
     internal static void RegisterContainer(Container container)
     {
-        if (container != null && !RegisteredContainers.Contains(container))
+        if (VerifyValid(container) && !RegisteredContainers.Contains(container))
         {
+            PetPantryPlugin.PetPantryLogger.LogDebugIfDebug($"Registering container {container.name}, is the container valid? {VerifyContainer(container)}");
             RegisteredContainers.Add(container);
         }
     }
@@ -29,9 +30,14 @@ public class UtilityMethods
         }
     }
 
+    internal static bool VerifyValid(Container container)
+    {
+        return container != null;
+    }
+
     internal static bool VerifyContainer(Container container)
     {
-        return container != null && !container.name.StartsWith(NameFilter) && container.GetInventory() != null && container.m_nview.IsValid() && container.m_nview.GetZDO().GetLong(ZDOVars.s_creator) != 0L;
+        return VerifyValid(container) && !container.name.StartsWith(NameFilter) && container.GetInventory() != null && container.m_nview.IsValid() && container.m_nview.GetZDO().GetLong(ZDOVars.s_creator) != 0L;
     }
 
     internal static void TryFeedAnimal(MonsterAI animalAI, Tameable tamable, Character character)
@@ -40,8 +46,6 @@ public class UtilityMethods
 
         foreach (Container container in nearbyContainers)
         {
-            if (container.GetInventory() == null)
-                continue;
             if (PetPantryPlugin.RequireOnlyFood.Value == PetPantryPlugin.Toggle.On && container.GetInventory().GetAllItems().Any(item => !animalAI.m_consumeItems.Exists(ci => ci.m_itemData.m_shared.m_name == item.m_shared.m_name)))
                 continue;
 
@@ -55,7 +59,7 @@ public class UtilityMethods
 
     private static List<Container> GetNearbyContainers(Vector3 position, float range)
     {
-        return RegisteredContainers.Where(c => c != null && Vector3.Distance(c.transform.position, position) <= range).ToList();
+        return RegisteredContainers.Where(c => VerifyContainer(c) && Vector3.Distance(c.transform.position, position) <= range).ToList();
     }
 
     private static bool IsFoodForAnimal(ItemDrop.ItemData? item, MonsterAI animalAI)
@@ -75,9 +79,14 @@ public class UtilityMethods
         Humanoid? humanoid = character as Humanoid;
         humanoid?.m_consumeItemEffects.Create(character.transform.position, Quaternion.identity);
         animalAI.m_animator.SetTrigger(ConsumeTrigger);
-        container.GetInventory().RemoveItem(item.m_shared.m_name, 1);
-        container.Save();
-        tamable.ResetFeedingTimer();
+        if (container.IsOwner())
+        {
+            container.GetInventory().RemoveItem(item.m_shared.m_name, 1);
+            container.Save();
+        }
+
+        if (tamable.m_nview.IsOwner())
+            tamable.ResetFeedingTimer();
     }
 
     internal static void SafeRemoveFeedCheckTime(Character character)

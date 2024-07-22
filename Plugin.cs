@@ -16,7 +16,7 @@ namespace PetPantry
     public class PetPantryPlugin : BaseUnityPlugin
     {
         internal const string ModName = "PetPantry";
-        internal const string ModVersion = "1.0.1";
+        internal const string ModVersion = "1.0.2";
         internal const string Author = "Azumatt";
         private const string ModGUID = $"{Author}.{ModName}";
         private static string ConfigFileName = $"{ModGUID}.cfg";
@@ -36,7 +36,7 @@ namespace PetPantry
         {
             _serverConfigLocked = config("1 - General", "Lock Configuration", Toggle.On, "If on, the configuration is locked and can be changed by server admins only.");
             _ = ConfigSync.AddLockingConfigEntry(_serverConfigLocked);
-            
+
             ContainerRange = config("1 - General", "ContainerRange", 15f, "Defines the range in meters within which containers are checked for food items.");
             RequireOnlyFood = config("1 - General", "Require Only Food", Toggle.Off, "Ensures only containers with acceptable food items are considered for feeding.");
             FeedCheckCooldown = config("1 - General", "FeedCheckCooldown", 10f, "Cooldown in seconds between feed checks. Checks only occur when the pet is hungry.");
@@ -112,5 +112,23 @@ namespace PetPantry
         }
 
         #endregion
+    }
+
+    public static class LoggerExtensions
+    {
+        public static void LogDebugIfDebug(this ManualLogSource logger, string message)
+        {
+#if DEBUG
+            
+            logger.LogDebug(message);
+#endif
+        }
+
+        public static void LogErrorIfDebug(this ManualLogSource logger, string message)
+        {
+#if DEBUG
+            logger.LogError(message);
+#endif
+        }
     }
 }

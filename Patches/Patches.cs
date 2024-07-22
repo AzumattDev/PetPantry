@@ -2,14 +2,14 @@
 using HarmonyLib;
 using UnityEngine;
 
-namespace PetPantry;
+namespace PetPantry.Patches;
 
 [HarmonyPatch(typeof(Container), nameof(Container.Awake))]
 public static class Container_Awake_Patch
 {
     private static void Postfix(Container __instance)
     {
-        if (!UtilityMethods.VerifyContainer(__instance))
+        if (!UtilityMethods.VerifyValid(__instance))
             return;
         UtilityMethods.RegisterContainer(__instance);
     }
@@ -20,7 +20,7 @@ public static class Container_OnDestroy_Patch
 {
     private static void Prefix(Container __instance)
     {
-        if (!UtilityMethods.VerifyContainer(__instance))
+        if (!UtilityMethods.VerifyValid(__instance))
             return;
         UtilityMethods.DeRegisterContainer(__instance);
     }

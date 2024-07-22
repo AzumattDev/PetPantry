@@ -108,7 +108,10 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Patches.cs" />
+        <Compile Include="Patches\ForTheYams.cs" />
+        <Compile Include="Patches\GroupUtils.cs" />
+        <Compile Include="Patches\Patches.cs" />
+        <Compile Include="Patches\PredefinedGroups.cs" />
         <Compile Include="UtilityMethods.cs" />
         <Compile Include="Plugin.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
