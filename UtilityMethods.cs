@@ -46,7 +46,7 @@ public class UtilityMethods
 
         foreach (Container container in nearbyContainers)
         {
-            if (PetPantryPlugin.RequireOnlyFood.Value == PetPantryPlugin.Toggle.On && container.GetInventory().GetAllItems().Any(item => !animalAI.m_consumeItems.Exists(ci => ci.m_itemData.m_shared.m_name == item.m_shared.m_name)))
+            if (PetPantryPlugin.RequireOnlyFood.Value.IsOn() && container.GetInventory().GetAllItems().Any(item => !animalAI.m_consumeItems.Exists(ci => ci.m_itemData.m_shared.m_name == item.m_shared.m_name)))
                 continue;
 
             foreach (ItemDrop.ItemData? item in container.GetInventory().GetAllItems().Where(item => IsFoodForAnimal(item, animalAI)))

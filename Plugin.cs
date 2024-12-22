@@ -16,7 +16,7 @@ namespace PetPantry
     public class PetPantryPlugin : BaseUnityPlugin
     {
         internal const string ModName = "PetPantry";
-        internal const string ModVersion = "1.0.2";
+        internal const string ModVersion = "1.0.3";
         internal const string Author = "Azumatt";
         private const string ModGUID = $"{Author}.{ModName}";
         private static string ConfigFileName = $"{ModGUID}.cfg";
@@ -40,7 +40,7 @@ namespace PetPantry
             ContainerRange = config("1 - General", "ContainerRange", 15f, "Defines the range in meters within which containers are checked for food items.");
             RequireOnlyFood = config("1 - General", "Require Only Food", Toggle.Off, "Ensures only containers with acceptable food items are considered for feeding.");
             FeedCheckCooldown = config("1 - General", "FeedCheckCooldown", 10f, "Cooldown in seconds between feed checks. Checks only occur when the pet is hungry.");
-
+            DisableFeeding = config("2 - Feeding", "Disable Feeding", Toggle.Off, "Disable feeding when the pet is hungry. Global toggle, disables for everyone (essentially disables the mod features)");
 
             Assembly assembly = Assembly.GetExecutingAssembly();
             _harmony.PatchAll(assembly);
@@ -85,6 +85,7 @@ namespace PetPantry
         public static ConfigEntry<float> ContainerRange = null!;
         public static ConfigEntry<Toggle> RequireOnlyFood = null!;
         public static ConfigEntry<float> FeedCheckCooldown = null!;
+        public static ConfigEntry<Toggle> DisableFeeding = null!;
 
         private ConfigEntry<T> config<T>(string group, string name, T value, ConfigDescription description, bool synchronizedSetting = true)
         {
@@ -129,6 +130,19 @@ namespace PetPantry
 #if DEBUG
             logger.LogError(message);
 #endif
+        }
+    }
+    
+    public static class ToggleExtentions
+    {
+        public static bool IsOn(this PetPantryPlugin.Toggle value)
+        {
+            return value == PetPantryPlugin.Toggle.On;
+        }
+
+        public static bool IsOff(this PetPantryPlugin.Toggle value)
+        {
+            return value == PetPantryPlugin.Toggle.Off;
         }
     }
 }

@@ -62,7 +62,7 @@ public static class PlayerUpdateTeleportPatchCleanupContainers
         {
             UtilityMethods.DeRegisterContainer(container);
         }
-        
+
         UtilityMethods.LastFeedCheckTimes.Clear();
     }
 }
@@ -72,6 +72,7 @@ public static class Tameable_IsHungry_Patch
 {
     public static void Postfix(Tameable __instance, ref bool __result)
     {
+        if (PetPantryPlugin.DisableFeeding.Value.IsOn()) return;
         if (!__result || !__instance.m_nview.IsOwner()) // If not hungry, return early
             return;
 

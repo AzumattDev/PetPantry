@@ -1,6 +1,6 @@
 {
   "name": "PetPantry",
-  "version_number": "1.0.2",
+  "version_number": "1.0.3",
   "website_url": "https://discord.gg/pdHgy6Bsng",
   "description": "Mod to automatically feed tamed animals from nearby containers, ensuring your pets stay happy and healthy without manual intervention.",
   "dependencies": [
