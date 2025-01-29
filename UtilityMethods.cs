@@ -77,12 +77,15 @@ public class UtilityMethods
         if (animalAI == null || tamable == null || character == null || container == null || item == null) return;
         animalAI.m_onConsumedItem?.Invoke(null);
         Humanoid? humanoid = character as Humanoid;
-        humanoid?.m_consumeItemEffects.Create(character.transform.position, Quaternion.identity);
-        animalAI.m_animator.SetTrigger(ConsumeTrigger);
+        humanoid?.m_consumeItemEffects?.Create(character.transform.position, Quaternion.identity);
+        animalAI.m_animator?.SetTrigger(ConsumeTrigger);
         if (container.IsOwner())
         {
-            container.GetInventory().RemoveItem(item.m_shared.m_name, 1);
-            container.Save();
+            if (container.GetInventory() != null)
+            {
+                container.GetInventory().RemoveItem(item.m_shared.m_name, 1);
+                container.Save();
+            }
         }
 
         if (tamable.m_nview.IsOwner())
